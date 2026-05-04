@@ -21,4 +21,6 @@ build_hook.go
 *.md
 !LICENSE
 !README_FA.md
-!.bat
+!README.md
+!Linux/
+!Linux/*.sh
