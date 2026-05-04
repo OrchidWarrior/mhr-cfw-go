@@ -1,30 +1,45 @@
-# MHR-CFW Go
-
+# [MHR-CFW](https://github.com/denuitt1/mhr-cfw) Rewritten in Go with YouTube Support Fix and Speed Improvements
 [![GitHub](https://img.shields.io/badge/GitHub-ThisIsDara-blue?logo=github)](https://github.com/ThisIsDara/mhr-cfw-go)
 
-## Disclaimer
+**[فارسی](README_FA.md)**
 
-`mhr-cfw-go` is provided for educational, testing, and research purposes only.
 
-- **Provided without warranty:** This software is provided "AS IS", without express or implied warranty, including merchantability, fitness for a particular purpose, and non-infringement.
-- **Limitation of liability:** The developers and contributors are not responsible for any direct, indirect, incidental, consequent, or other damages resulting from the use of this project or the inability to use it.
-- **User responsibility:** Running this project outside controlled test environments may affect networks, accounts, proxies, certificates, or connected systems. You are solely responsible for installation, configuration, and use.
-- **Legal compliance:** You are responsible for complying with all local, national, and international laws and regulations before using this software.
+#### Disclaimer
+
 - **Google services compliance:** If you use Google Apps Script or other Google services with this project, you are responsible for complying with Google's Terms of Service, acceptable use rules, quotas, and platform policies. Misuse may lead to suspension or termination of your Google account or deployments.
-- **License terms:** Use, copying, distribution, and modification of this software are governed by the repository license. Any use outside those terms is prohibited.
+
+
+## 🚀 Improvements Over Python Version
+
+
+ ## **✅ 1.  YouTube Support Fixed**
+- Proper CORS handling — Added preflight OPTIONS handling and CORS header injection for cross-origin requests
+- Content-Encoding fix — Better decoding for brotli/gzip responses
+- Range request support — Video streaming needs proper Range header handling
+## **✅ 2. Speed Improvements**
+- HTTP/2 transport — Uses HTTP/2 instead of HTTP/1.1 (faster multiplexing)
+- Connection pooling — Reuses TLS connections instead of creating new ones
+- Request coalescing — Multiple GET requests for same URL share one relay call
+- Response caching — LRU cache with proper TTL for static assets
+## **✅ 3. Security**
+- RSA 4096-bit keys — Upgraded from 2048-bit for MITM certificates
+## **✅ 4. Reliability**
+- Proper signal handling — Clean shutdown on Ctrl+C
+- Graceful error handling — Better error responses
+## **✅ 5. Code Quality**
+- Go rewrite — Static typing, better memory management
+- No external dependencies — Uses standard library where possible
+
+
+
+
 
 ---
 
 ## How It Works
 
-```
-Client -> Local Proxy -> Google front -> Google Apps Script -> Target website
-               |
-               +-> shows www.google.com to the network DPI filter
-```
 
-The Go proxy runs locally on your machine and forwards traffic through Google's infrastructure.
-The network only sees allowed domains like `www.google.com` while your actual traffic is hidden inside the relay request.
+The program runs on your PC and sends your requests through Google's infrastructure. Network filters see ordinary Google traffic and allow it through. Meanwhile, Google's free Apps Script fetches the actual website you wanted.
 
 ---
 
@@ -51,7 +66,7 @@ This will build the `mhr-cfw-go.exe` file.
 
 ### 3 - Configure
 
-Edit `config.json` with your settings:
+Edit `config.json` with your settings or ideally run `Setup Wizard` in the TUI:
 
 ```json
 {
@@ -62,22 +77,50 @@ Edit `config.json` with your settings:
 
 ### 4 - Run
 
-Double-click `run.bat` or run:
+Double-click `mhr-cfw-go.exe` or run:
 
 ```powershell
 .\mhr-cfw-go.exe
 ```
 
-The proxy will start on `127.0.0.1:8080`. Use [FoxyProxy](https://getfoxyproxy.org/) to route browser traffic through it.
+The app opens an interactive menu. Select ``1) Start proxy`` to begin.
+
+---
 
 ### 5 - Install CA Certificate (for HTTPS interception)
 
-Run with:
+Run the app, the select ``3) Install CA certificate`` from the menu.
 
-```powershell
-.\mhr-cfw-go.exe --install-cert
+This installs the local Certificate Authority so the proxy can intercept HTTPs traffic.
+
+---
+
+# 🛠️ How to Setup
+
+1. Open [mhr-cfw README File](https://github.com/denuitt1/mhr-cfw/blob/main/README.md#how-to-use) and follow the steps provided by [denuitt1](https://github.com/denuitt1)
+
+
+---
+## Building from Source
+
+Requirements:
+- [Go 1.22+](https://go.dev/dl/)
+
+```bash
+go build -ldflags "-s -w" -o mhr-cfw-go.exe ./cmd/mhr-cfw
 ```
 
+---
+
+## WIP...
+### `` 📊 Statistics ``
+- Request counter — Total requests served
+- Bandwidth usage — Bytes sent/received
+### `` 🖥️ Monitoring ``
+- Connection status
+### `` ✏️ UX ``
+- Profile switching — Different config profiles
+- Export/Import config — Backup settings
 ---
 
 ## Command Line Options
@@ -97,40 +140,6 @@ Run with:
 | `--version` | Show version |
 
 ---
-
-## Set Up Google Apps Script Relay
-
-1. Open [Google Apps Script](https://script.google.com/) and sign in.
-2. Click **New project**.
-3. Copy your relay code into the editor.
-4. Deploy as Web App (Execute as: Me, Who has access: Anyone).
-5. Copy the Deployment ID into `config.json`.
-
----
-
-## Features
-
-- HTTP/HTTPS proxy with CONNECT tunnel
-- SOCKS5 proxy
-- Domain fronting via Google Apps Script
-- MITM proxy with dynamic certificates
-- HTTP/2 transport
-- Interactive TUI menu
-- LAN sharing support
-
----
-
-## Building from Source
-
-Requirements:
-- [Go 1.22+](https://go.dev/dl/)
-
-```bash
-go build -ldflags "-s -w" -o mhr-cfw-go.exe ./cmd/mhr-cfw
-```
-
----
-
 ## License
 
 MIT
