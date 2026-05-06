@@ -60,15 +60,22 @@ cd mhr-cfw-go
 
 Or download the latest release from [ 📥 GitHub Releases](https://github.com/ThisIsDara/mhr-cfw-go/releases)
 
-### 2 - Run build.bat
+### 2 - Build
 
-Double-click `build.bat` or run:
+**Windows:** Double-click `build.bat` or run:
 
 ```powershell
 .\build.bat
 ```
 
-This will build the `mhr-cfw-go.exe` file.
+**Linux/Mac:** Make the script executable and run:
+
+```bash
+chmod +x build.sh
+./build.sh
+```
+
+This will build the executable (`mhr-cfw-go.exe` on Windows, `mhr-cfw-go` on Linux/Mac).
 
 ### 3 - Configure
 
@@ -83,21 +90,76 @@ Edit `config.json` with your settings or ideally run `Setup Wizard` in the TUI:
 
 ### 4 - Run
 
-Double-click `mhr-cfw-go.exe` or run:
+**Windows:** Double-click `mhr-cfw-go.exe` or run:
 
 ```powershell
 .\mhr-cfw-go.exe
 ```
 
-The app opens an interactive menu. Select ``1) Start proxy`` to begin.
+**Linux/Mac:** Run:
+
+```bash
+./mhr-cfw-go
+```
+
+The app opens an interactive menu. Select **1) Start proxy** to begin.
 
 ---
 
 ### 5 - Install CA Certificate (for HTTPS interception)
 
-Run the app, the select ``3) Install CA certificate`` from the menu.
+Run the app, then select **3) Install CA certificate** from the menu.
 
-This installs the local Certificate Authority so the proxy can intercept HTTPs traffic.
+This installs the local Certificate Authority so the proxy can intercept HTTPS traffic.
+
+---
+
+## 🐧 Linux / 🍎 macOS / 📱 Termux Guide
+
+### Linux/macOS
+
+```bash
+# Clone
+git clone https://github.com/ThisIsDara/mhr-cfw-go.git
+cd mhr-cfw-go
+
+# Build
+chmod +x build.sh
+./build.sh
+
+# Run
+./mhr-cfw-go
+```
+
+Or manually:
+
+```bash
+GOOS=linux go build -ldflags "-s -w" -o mhr-cfw-go ./cmd/mhr-cfw
+./mhr-cfw-go
+```
+
+### Termux (Android)
+
+```bash
+# Install Go and Git
+pkg update -y
+pkg install -y golang git
+
+# Clone
+git clone https://github.com/ThisIsDara/mhr-cfw-go.git
+cd mhr-cfw-go
+
+# Build
+chmod +x build.sh
+./build.sh
+
+# Run
+./mhr-cfw-go
+```
+
+### Stopping
+
+Press `Ctrl+C` to stop the proxy.
 
 ---
 
