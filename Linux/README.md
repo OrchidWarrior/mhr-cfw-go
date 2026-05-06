@@ -62,9 +62,6 @@ Or run directly:
 ./mhr-cfw-go --version
 ```
 
-## Default Ports
-- HTTP Proxy: `127.0.0.1:8080`
-- SOCKS5 Proxy: `127.0.0.1:1080`
 
 ## Termux Notes
 
