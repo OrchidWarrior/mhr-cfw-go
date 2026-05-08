@@ -43,11 +43,16 @@ jobs:
           go-version: '1.22'
 
       - name: Build
-        run: GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags "-s -w" -o mhr-cfw-go-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/mhr-cfw
+        shell: bash
+        run: |
+          export GOOS=${{ matrix.goos }}
+          export GOARCH=${{ matrix.goarch }}
+          go build -ldflags "-s -w" -o mhr-cfw-go-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/mhr-cfw
 
       - name: Rename Windows executable
         if: matrix.goos == 'windows'
-        run: Move-Item mhr-cfw-go-windows-${{ matrix.goarch }} mhr-cfw-go-windows-${{ matrix.goarch }}.exe
+        shell: bash
+        run: mv mhr-cfw-go-windows-${{ matrix.goarch }} mhr-cfw-go-windows-${{ matrix.goarch }}.exe
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -69,13 +74,18 @@ jobs:
         with:
           path: .
 
-      - name: List artifacts
-        run: Get-ChildItem -Recurse -File | Select-Object -ExpandProperty FullName
-
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: mhr-cfw-go-*
-          body: "Built from commit ${{ github.sha }}"
+          body: |
+            ## Bug Fixes
+            - Fixed Telegram API connectivity issues
+            - Fixed encoding issues on some websites (brotli/zstd decompression)
+
+            ## Improvements
+            - Better compatibility with Google Apps Script relay
+
+            🦢
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
