@@ -72,12 +72,17 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: .
+          path: ./binaries
+          pattern: mhr-cfw-go-*
+          merge-multiple: true
+
+      - name: List binaries
+        run: ls -la ./binaries
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: mhr-cfw-go-*
+          files: ./binaries/*
           body: |
             ## Bug Fixes
             - Fixed Telegram API connectivity issues
